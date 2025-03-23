@@ -1,11 +1,3 @@
-let button = document.getElementById('dropdown-btn');
-let menu = document.getElementById('dropdown-content');
-
-button.addEventListener('click', function() {
-    menu.classList.toggle('show');
-});
-
-
 const users = [
     { name: "Alice", activity: [30, 45, 50, 60, 20, 10, 0] }, 
     { name: "Bob", activity: [15, 30, 25, 10, 0, 40, 50] },
@@ -15,18 +7,84 @@ const users = [
 ];
 
 function totalActivityPerWeek(users) {
-    let person = { name: "", sumActivity: 0 };
-    for(let i = 0; i < users.length; i ++){
-        let sum = 0 
-        console.log(users[i].activity)
-        users[i].activity.map((value) => {
-            sum = value + sum;
-        });
-        if (person.sumActivity < sum) {
-            person.sumActivity = sum;
+    users.forEach((user)=> {
+        let sum = user.activity.reduce((accum, value) => accum + value, 0)
+        console.log(user.name + ': ' + sum)
+    })
+}
+totalActivityPerWeek(users);
+
+function findMaxActivity(users) {
+    let sumOfActivity = users.map((user)=> {
+        let sum = user.activity.reduce((accum, value) => accum + value, 0)
+        return sum
+    })
+    let max = Math.max(...sumOfActivity)
+    console.log('Max activity of user is ' + max)
+
+}
+findMaxActivity(users);
+
+function filterOfInactive(users) {
+    users.map((user) => {
+        let sum = user.activity.reduce((accum, value) => accum + value, 0)
+        if(sum > 0) {
+            console.log(user.name + ': ' + sum)
+        }
+    })
+}
+filterOfInactive(users)
+
+function averageActivity(users) {
+    users.map((user) => {
+        let sum = Math.floor(user.activity.reduce((accum, value) => accum + value, 0) / user.activity.length)
+        console.log("Average activity of " + user.name + ": " + sum)
+    })
+}
+averageActivity(users)
+
+function sortUsers(users) {
+    let sumOfActivity = users.map((user)=> {
+        let sum = user.activity.reduce((accum, value) => accum + value, 0)
+        return sum
+    })
+        let sortedValue = sumOfActivity.sort(function(a,b) {return b-a})
+        console.log(sortedValue)
+}
+sortUsers(users)
+
+
+
+
+////class
+class BankAccount {
+    constructor(accountHolder, balance, accountNumber) {
+        this.accountHolder = accountHolder;
+        this.balance = balance;
+        this.accountNumber = accountNumber;
+    }
+
+    deposit(amount) {
+        if(amount > 0) {
+            this.balance += amount;
+        } else {
+            console.log('Invalid value')
         }
     }
-    console.log(person)
-}
 
-totalActivityPerWeek(users)
+    withDraw(value) {
+        if(value <= this.balance) {
+            this.balance -= value;
+        } else {
+            console.log('There is no money')
+        }
+    }
+
+    get balance() {
+        return this.balance;
+    }
+
+    get accountInfo() {
+        console.log(`${this.accountHolder} have ${this.balance} in account ${this.accountNumber}`)
+    }
+}
